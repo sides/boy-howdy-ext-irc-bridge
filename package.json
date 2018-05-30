@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "name": "boy-howdy-ext-irc-bridge",
+  "version": "0.1.0-alpha",
+  "dependencies": {
+    "discord-bot.js": "file:../boy-howdy/discord-bot.js/",
+    "irc": "^0.5.2"
+  },
+  "devDependencies": {
+    "@types/irc": "^0.3.32",
+    "@types/node": "^9.6.2",
+    "typescript": "^2.8.1"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "boy-howdy-extension": {
+    "id": "irc-bridge@sides.tv"
+  }
+}
