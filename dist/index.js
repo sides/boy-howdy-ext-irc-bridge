@@ -23,6 +23,12 @@ function enable(on) {
             }
             discordChannel.send(message);
         });
+        irc.on('action', (nick, channel, message) => {
+            if (channel != ircChannelName) {
+                return;
+            }
+            discordChannel.send('/me ' + message);
+        });
         irc.on('join', (channel, nick, message) => {
             if (channel != ircChannelName) {
                 return;
@@ -54,7 +60,8 @@ function enable(on) {
             irc.say(ircChannelName, `Message by ${message.author.username} edited: "${oldMessage.content}" -> "${message.content}"`);
         });
         on('presenceUpdate', (oldMember, member) => {
-            if (oldMember.presence.status === 'online' && member.presence.status === 'offline') {
+            if ((oldMember.presence.status === 'online' || oldMember.presence.status === 'idle' || oldMember.presence.status === 'dnd')
+                && member.presence.status === 'offline') {
                 irc.action(ircChannelName, `${member.user.username} has gone offline.`);
             }
             else if (oldMember.presence.status === 'offline'

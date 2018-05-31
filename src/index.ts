@@ -31,6 +31,14 @@ export function enable(on: ExtensionBootstrapper) {
       discordChannel.send(message);
     });
 
+    irc.on('action', (nick: string, channel: string, message: string) => {
+      if (channel != ircChannelName) {
+        return;
+      }
+
+      discordChannel.send('/me ' + message);
+    });
+
     irc.on('join', (channel: string, nick: string, message: string) => {
       if (channel != ircChannelName) {
         return;
@@ -71,7 +79,8 @@ export function enable(on: ExtensionBootstrapper) {
     });
 
     on('presenceUpdate', (oldMember: GuildMember, member: GuildMember) => {
-      if (oldMember.presence.status === 'online' && member.presence.status === 'offline') {
+      if ((oldMember.presence.status === 'online' || oldMember.presence.status === 'idle' || oldMember.presence.status === 'dnd')
+        && member.presence.status === 'offline') {
         irc.action(ircChannelName, `${member.user.username} has gone offline.`);
       } else if (oldMember.presence.status === 'offline'
         && (member.presence.status === 'online' || member.presence.status === 'idle' || member.presence.status === 'dnd')) {
