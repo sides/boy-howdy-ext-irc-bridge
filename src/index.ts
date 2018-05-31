@@ -36,7 +36,7 @@ export function enable(on: ExtensionBootstrapper) {
         return;
       }
 
-      discordChannel.send('/me ' + message);
+      discordChannel.send(`_${message}_`);
     });
 
     irc.on('join', (channel: string, nick: string, message: string) => {

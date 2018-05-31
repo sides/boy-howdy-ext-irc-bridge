@@ -27,7 +27,7 @@ function enable(on) {
             if (channel != ircChannelName) {
                 return;
             }
-            discordChannel.send('/me ' + message);
+            discordChannel.send(`_${message}_`);
         });
         irc.on('join', (channel, nick, message) => {
             if (channel != ircChannelName) {
