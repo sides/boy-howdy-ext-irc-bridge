@@ -46,6 +46,11 @@ function enable(on) {
                 return;
             }
             irc.say(ircChannelName, `${message.author.username}: ${message.content}`);
+            if (message.attachments) {
+                message.attachments.forEach(attachment => {
+                    irc.say(ircChannelName, `Attachment by ${message.author.username}: ${attachment.url}`);
+                });
+            }
         });
         on('messageDelete', (message) => {
             if (message.channel.id !== discordChannelId) {
@@ -54,7 +59,7 @@ function enable(on) {
             irc.say(ircChannelName, `Message by ${message.author.username} deleted: "${message.content}"`);
         });
         on('messageUpdate', (oldMessage, message) => {
-            if (message.channel.id !== discordChannelId) {
+            if (message.channel.id !== discordChannelId || oldMessage.content === message.content) {
                 return;
             }
             irc.say(ircChannelName, `Message by ${message.author.username} edited: "${oldMessage.content}" -> "${message.content}"`);
