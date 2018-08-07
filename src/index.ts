@@ -60,6 +60,12 @@ export function enable(on: ExtensionBootstrapper) {
       }
 
       irc.say(ircChannelName, `${message.author.username}: ${message.content}`);
+
+      if (message.attachments) {
+        message.attachments.forEach(attachment => {
+          irc.say(ircChannelName, `Attachment by ${message.author.username}: ${attachment.url}`);
+        });
+      }
     });
 
     on('messageDelete', (message: Message) => {
@@ -71,7 +77,7 @@ export function enable(on: ExtensionBootstrapper) {
     });
 
     on('messageUpdate', (oldMessage: Message, message: Message) => {
-      if (message.channel.id !== discordChannelId) {
+      if (message.channel.id !== discordChannelId || oldMessage.content === message.content) {
         return;
       }
 
